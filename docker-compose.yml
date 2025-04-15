@@ -15,7 +15,7 @@ services:
       - backend_services
 
   order-service:
-    image: ramymohamed/order-service-l8:latest
+    image: congzhao0294/order-service:latest
     container_name: 'order-service'
     restart: always
     ports:
@@ -26,19 +26,20 @@ services:
       timeout: 10s
       retries: 5
     environment:
-      - ORDER_QUEUE_HOSTNAME=rabbitmq
-      - ORDER_QUEUE_PORT=5672
-      - ORDER_QUEUE_USERNAME=username
-      - ORDER_QUEUE_PASSWORD=password
-      - ORDER_QUEUE_NAME=orders
-      - ORDER_QUEUE_RECONNECT_LIMIT=3
+      - ORDER_QUEUE_HOSTNAME
+      - ORDER_QUEUE_PORT
+      - ORDER_QUEUE_USERNAME
+      - ORDER_QUEUE_PASSWORD
+      - ORDER_QUEUE_TRANSPORT
+      - ORDER_QUEUE_RECONNECT_LIMIT
+      - ORDER_QUEUE_NAME
     networks:
       - backend_services
     depends_on:
       rabbitmq:
         condition: service_healthy
   makeline-service:
-    image: ramymohamed/makeline-service-l8:latest 
+    image: congzhao0294/makeline-service:latest 
     container_name: 'makeline-service'
     restart: always
     ports:
@@ -49,13 +50,11 @@ services:
       timeout: 10s
       retries: 5
     environment:
-      - ORDER_QUEUE_URI=amqp://rabbitmq:5672
-      - ORDER_QUEUE_USERNAME=username
-      - ORDER_QUEUE_PASSWORD=password
-      - ORDER_QUEUE_NAME=orders
-      - ORDER_DB_URI=mongodb://mongodb:27017
-      - ORDER_DB_NAME=orderdb
-      - ORDER_DB_COLLECTION_NAME=orders
+      - ORDER_QUEUE_URI
+      - ORDER_QUEUE_LISTENER_USERNAME
+      - ORDER_QUEUE_LISTENER_PASSWORD
+      - ORDER_QUEUE_NAME
+      - ORDER_QUEUE_TRANSPORT
     networks:
       - backend_services
     depends_on:
@@ -64,7 +63,7 @@ services:
       mongodb:
         condition: service_healthy
   virtual-customer:
-    image: ramymohamed/virtual-customer-l8:latest
+    image: congzhao0294/virtual-customer:latest
     container_name: 'virtual-customer'
     restart: always
     environment:
