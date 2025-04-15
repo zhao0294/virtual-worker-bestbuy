@@ -35,9 +35,7 @@ services:
       - ORDER_QUEUE_NAME
     networks:
       - backend_services
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+
   makeline-service:
     image: congzhao0294/makeline-service:latest 
     container_name: 'makeline-service'
