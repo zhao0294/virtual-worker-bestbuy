@@ -56,8 +56,6 @@ services:
     networks:
       - backend_services
     depends_on:
-      rabbitmq:
-        condition: service_healthy
       mongodb:
         condition: service_healthy
   virtual-customer:
